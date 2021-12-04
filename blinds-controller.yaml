@@ -1,0 +1,42 @@
+esphome:
+  name: blinds-controller
+  platform: ESP8266
+  board: d1_mini
+  includes:
+    - blinds-cover-component.h
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "ota_password"
+
+wifi:
+  ssid: "wifi"
+  password: "password"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Blinds-Controller"
+    password: "pass"
+
+captive_portal:
+
+light:
+  - platform: status_led
+    name: "Status LED"
+    pin: D4
+
+cover:
+- platform: custom
+  lambda: |-
+    auto blinds_cover = new BlindsCover();
+    App.register_component(blinds_cover);
+    return {blinds_cover};
+
+  covers:
+    - name: "Living Room Blinds"
